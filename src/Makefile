@@ -1,12 +1,21 @@
 CC=clang
-CFLAGS=-02 -Wall
-all: arcIV
+CFLAGS=-O2 -Wall -fPIC -shared -ldl -D_GNU_SOURCE
+all: arcIV example
 
+example: example.o
+	@sudo $(CC) example.o -o example -Wall -O2
 
-arcIV: arcIV.c 
+example.o: example.c
+	@sudo $(CC) -c -O2 -Wall example.c 
+
+arcIV: arcIV.o
+	@sudo $(CC) arcIV.o -o arcIV.so $(CFLAGS)
+
+arcIV.o: arcIV.c 
 	@echo "Building Program...."
-	@sudo $(CC) arcIV.c -o arc	
+	@sudo $(CC) -c -O2 -Wall arcIV.c	
 	@echo "Done!"
+
 clean:
 	@echo "Removing files"
-	@sudo rm arc
+	@sudo rm -f *.o *.so example
