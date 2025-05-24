@@ -2,8 +2,8 @@ CC=clang
 CFLAGS=-O2 -Wall -fPIC -shared -ldl -D_GNU_SOURCE
 all: arcIV example
 
-example: example.o
-	@sudo $(CC) example.o -o example -Wall -O2
+example: example.o arcIV.o
+	@sudo $(CC) arcIV.o example.o -o example -Wall -O2
 
 example.o: example.c
 	@sudo $(CC) -c -O2 -Wall example.c 

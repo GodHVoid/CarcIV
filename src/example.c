@@ -28,19 +28,31 @@ int main() {
   // keep internal state
   arcIV *rc4;
   int16 skey, stext;
-  char *key, *from, *encrypted, *decrypted;
+  char *key, *from;
+  int8 *encrypted, *decrypted;
 
-  key = "tomates";
+  key = "tomatoes";
   skey = strlen(key);
   from = "Shall I compare thee to a summer's day?";
   stext = strlen(from);
 
-  printf("Initializeing Encryption....\n");
+  printf("Initializeing Encryption....");
   rc4 = rc4init((int8 *)key, skey);
   printf("done\n");
 
   printf("'%s'\n ->", from);
-  encrypted = rc4encrypt((int8 *)from, stext);
+  encrypted = rc4encrypt(rc4, (int8 *)from, stext);
+  printbin(encrypted, stext);
+
+  rc4uninit(rc4);
+
+  printf("Initializeing Decyption....");
+  rc4 = rc4init((int8 *)key, skey);
+  printf("done\n");
+
+  decrypted = rc4decrypt(rc4, encrypted, stext);
+  printf("  ->'%s'", decrypted);
+  rc4uninit(rc4);
 
   return 0;
 }
